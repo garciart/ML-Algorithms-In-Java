@@ -5,7 +5,58 @@ The median list price per square foot in the United States in 2018 is $151.
 1000 sqft = $151,000 (actual y[2])
 theta0 (actual b) = 500
 theta1 (actual m) = 151
-public static int[] x1 = {500, 1000]};
+
+theta0	theta1	x0	x1	h
+0	151	1	500	75500
+0	151	1	1000	151000
+0	151	1	2000	302000
+0	151	1	4000	604000
+0	149	1	500	74500
+0	149	1	1000	149000
+0	149	1	2000	298000
+0	149	1	4000	596000
+0	153	1	500	76500
+0	153	1	1000	153000
+0	153	1	2000	306000
+0	153	1	4000	612000
+0	100	1	500	50000
+0	100	1	1000	100000
+0	100	1	2000	200000
+0	100	1	4000	400000
+
+    /**
+     * x represents the set of independent variables, known as the set of features.
+     * In this case, there is only one, a house's square footage.
+     */
+    public static Double[][] xMatrix = {{0.0, 500.0},
+                                        {0.0, 1000.0},
+                                        {0.0, 2000.0},
+                                        {0.0, 4000.0}};
+
+    /**
+     * y represents the dependent variable, known as the output feature.
+     * In this case, the actual price of the house based on the square footage ($151 per square foot in 2018).
+     */
+    public static Double[] yVector = {75500.0, 151000.0, 302000.0, 604000.0};
+
+    /**
+     * theta represents the slope of each feature (x) in the set.
+     * In this case, the slope of the house's square footage values.
+     */
+    public static Double[][] thetaMatrix = {{0.0, 151.0},
+                                            {0.0, 149.0},
+                                            {0.0, 153.0}};
+    
+    /**
+     * mActual is the slope of (x, y): 151/1
+     */
+    public static Double mActual = 151.0;
+    
+    /**
+     * bActual is the y-intercept for (x, y): 0
+     */
+    public static Double bActual = 0.0;
+
 
 
 
