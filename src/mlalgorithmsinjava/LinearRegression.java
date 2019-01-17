@@ -68,6 +68,7 @@ public class LinearRegression {
             }
             Double m = (double)h.length;
             Double J = (1.0 / (2.0 * m)) * sumOfSquares;
+            System.out.printf("J = %.2f = 1/(2 * %.0f) * \u221A(%.2f)\u00B2 \n", J, m, sumOfSquares);
             return J;
         }
     }

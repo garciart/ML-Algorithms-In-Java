@@ -37,29 +37,26 @@ public class MLAlgorithmsInJava {
     /**
      * x represents the set of independent variables, known as the set of features.
      * In this case, there is only one, a house's square footage.
+     * x[1][n] must always equal 1 to allow the formula to return theta[0][n]
      */
-    public static Double[][] xMatrix = {{0.0, 1.0},
-                                        {0.0, 2.0},
-                                        {0.0, 3.0},
-                                        {0.0, 4.0},
-                                        {0.0, 5.0}
+    public static Double[][] xMatrix = {{1.0, 90.0},
+                                        {1.0, 101.0},
+                                        {1.0, 1330.0}
     };
     
     /**
      * y represents the dependent variable, known as the output feature.
      * In this case, the actual price of the house based on the square footage ($151 per square foot in 2018).
      */
-    public static Double[] yVector = {1.0, 2.0, 3.0, 4.0, 5.0};
+    public static Double[] yVector = {24900.0, 338000.0, 6500000.0};
 
     /**
      * theta represents the slope of each feature (x) in the set.
      * In this case, the slope of the house's square footage values.
+     * The number of thetas must match the number of x's per dimension.
+     * theta[0][n] is equal to the y-intercept of the prediction.
      */
-    public static Double[][] thetaMatrix = {{0.0, 0.0},
-                                            {0.0, 0.25},
-                                            {0.0, 0.50},
-                                            {0.0, 0.75},
-                                            {0.0, 1.0}
+    public static Double[][] thetaMatrix = {{1.004579, 5.286822}
     };
     
     /**
@@ -75,50 +72,75 @@ public class MLAlgorithmsInJava {
         }
         // Check that there is a theta value for each value of x (per row). 
         else if(xMatrix[0].length != thetaMatrix[0].length) {
-            System.out.println("Check your data: the number of x elements (" + xMatrix.length + ") does not equal the number of theta elements (" + thetaMatrix[0].length + ").");
-            exit(0);
-        }
-        // Check that the number of thetas equals the number of y values.
-        else if(thetaMatrix.length != yVector.length) {
-            System.out.println("Check your data: the number of theta elements (" + thetaMatrix.length + ") does not equal the number of y elements (" + yVector.length + ").");
+            System.out.println("Check your data: the number of x elements (" + xMatrix[0].length + ") does not equal the number of theta elements (" + thetaMatrix[0].length + ").");
             exit(0);
         }
         else {
             System.out.println("Data OK.");
-            System.out.println("\nCalculating the hypotheses...\n");
+            System.out.println("\nCalculating the hypotheses (h(x) = \u019F\u2080 + \u019F\u2081X\u2081 + ... + \u019F\u2099X\u2099)...\n");
+            // Create a vector to hold each element in a theta matrix column
             Double[] thetaVector = new Double[thetaMatrix[0].length];
+            // Create a vector to hold each element in an x matrix column
             Double[] xVector = new Double[xMatrix[0].length];
+            // Create a matrix to hold all the h values per theta and x vector (used to compute sum of squares for each vector)
             Double[][] h = new Double[thetaMatrix.length][xMatrix.length];
+            /**
+             * To get h, you need to apply each theta vector to each vector of x.
+             * The number of theta vectors controls the outer loop.
+             * Each theta vector must be applied to each x vector,
+             * so the inner loop is controlled by the number of vectors in x.
+             * Each value in a theta vector must be applied to each value in an x vector,
+             * so the innermost loop is controlled by the number of elements
+             * in each theta vector or x vector
+             * (the number of elements in each must be the same for matrix multiplication).
+            */
             for(int i = 0; i < thetaMatrix.length; i++) {
                 for(int j = 0; j < xMatrix.length; j++) {
                     for(int k = 0; k < xMatrix[0].length; k++) {
+                        // Create the vectors for matrix multiplication
                         xVector[k] = xMatrix[j][k];
                         thetaVector[k] = thetaMatrix[i][k];
                     }
-
+                    // Apply the hypothesis function. If it fails, it wil return null and the application will exit.
                     if((h[i][j] = LinearRegression.Hypothesis(xVector, thetaVector)) == null) {
                         exit(0);
                     }
                     else {
-                        System.out.printf("h(%.2f) = %.2f + (%.2f * %.2f) = %.2f\n", xVector[1], thetaVector[0], thetaVector[1], xVector[1], h[i][j]);
+                        // My fun code to print out each hypothesis function! 
+                        System.out.printf("h(x) = %.2f = ", h[i][j]);
+                        for(int k2 = 0; k2 < xVector.length; k2++) {
+                            System.out.printf("(%.2f * %.2f)", thetaVector[k2], xVector[k2]);
+                            System.out.print(k2 == (xVector.length - 1) ? "" : " + ");
+                        }
+                        System.out.println();
                     }
                 }
                 System.out.println();
             }
-            System.out.println("\nCalculating the cost...\n");
-            Double[] J = new Double[xMatrix.length];
+            System.out.println("\nCalculating the cost [J(\u019F\u2080, \u019F\u2081...\u019F\u2099)) = 1 / (2 * m) * \u221A(\u2211((h(x\u2099) - y\u2099)\u00B2))]...\n");
+            Double[] J = new Double[thetaMatrix.length];
             for(int i = 0; i < thetaMatrix.length; i++) {
                 if((J[i] = LinearRegression.CostFunction(h[i], yVector)) == null) {
                         exit(0);
                 }
                 else {
-                    System.out.printf("J(%.2f, %.2f) = %.2f\n", thetaMatrix[i][0], thetaMatrix[i][1], J[i]);
+                    // My fun code to print out the results of the cost function! 
+                    System.out.print("J(");
+                    for(int k2 = 0; k2 < thetaMatrix.length; k2++) {
+                        System.out.printf("%.2f", thetaMatrix[i][k2]);
+                        System.out.print(k2 == (thetaMatrix.length - 1) ? "" : ", ");
+                    }
+                    System.out.printf(") = %.2f\n", J[i]);
+                    System.out.println();
                 }
             }
             System.out.println("\nPerforming gradient descent...\n");
-            Double thetaJ = 0.0;
+            Double thetaJ = J[0];
             Double alpha = 0.0;
             Double[] minimizedThetaVector = new Double[thetaMatrix[0].length];
+            for(int i = 0; i < J.length; i++) {
+                System.out.println("J = " + J[i]);
+            }
             /** LEFT OFF HERE! **/
         }
     }
