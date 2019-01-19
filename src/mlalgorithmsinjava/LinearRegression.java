@@ -43,7 +43,7 @@ public class LinearRegression {
         }
         else {
             Double h = 0.0;
-            for(int i = 0; i < x.length; i++) {
+            for(int i = 0; i < theta.length; i++) {
                 h += theta[i] * x[i];
             }
             return h;
@@ -65,10 +65,11 @@ public class LinearRegression {
             Double sumOfSquares = 0.0;
             for(int i = 0; i < h.length; i++) {
                 sumOfSquares += Math.pow((h[i] - y[i]), 2);
+                System.out.println("h(x) - y = " + h[i] + " - " + y[i] + " = " + (h[i] - y[i]));
             }
             Double m = (double)h.length;
             Double J = (1.0 / (2.0 * m)) * sumOfSquares;
-            System.out.printf("J = %.2f = 1/(2 * %.0f) * \u221A(%.2f)\u00B2 \n", J, m, sumOfSquares);
+            System.out.printf("J = %.2f = 1/(2 * %.0f) * (%.2f)\u00B2 \n", J, m, sumOfSquares);
             return J;
         }
     }

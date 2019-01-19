@@ -39,8 +39,8 @@ public class MLAlgorithmsInJava {
      * In this case, there is only one, a house's square footage.
      * x[1][n] must always equal 1 to allow the formula to return theta[0][n]
      */
-    public static Double[][] xMatrix = {{1.0, 90.0},
-                                        {1.0, 101.0},
+    public static Double[][] xMatrix = {/*{1.0, 90.0},
+                                        {1.0, 101.0},*/
                                         {1.0, 1330.0}
     };
     
@@ -48,7 +48,7 @@ public class MLAlgorithmsInJava {
      * y represents the dependent variable, known as the output feature.
      * In this case, the actual price of the house based on the square footage ($151 per square foot in 2018).
      */
-    public static Double[] yVector = {24900.0, 338000.0, 6500000.0};
+    public static Double[] yVector = {/*24900.0, 338000.0,*/ 6500000.0};
 
     /**
      * theta represents the slope of each feature (x) in the set.
@@ -56,7 +56,8 @@ public class MLAlgorithmsInJava {
      * The number of thetas must match the number of x's per dimension.
      * theta[0][n] is equal to the y-intercept of the prediction.
      */
-    public static Double[][] thetaMatrix = {{1.004579, 5.286822}
+    public static Double[][] thetaMatrix = {{1.004579, 5.286822},
+                                            {1004.579, 5286.822},
     };
     
     /**
@@ -102,12 +103,12 @@ public class MLAlgorithmsInJava {
                         thetaVector[k] = thetaMatrix[i][k];
                     }
                     // Apply the hypothesis function. If it fails, it wil return null and the application will exit.
-                    if((h[i][j] = LinearRegression.Hypothesis(xVector, thetaVector)) == null) {
+                    if((h[i][j] = LinearRegression.Hypothesis(thetaVector, xVector)) == null) {
                         exit(0);
                     }
                     else {
                         // My fun code to print out each hypothesis function! 
-                        System.out.printf("h(x) = %.2f = ", h[i][j]);
+                        System.out.printf("h\u019F(x) = %.2f = ", h[i][j]);
                         for(int k2 = 0; k2 < xVector.length; k2++) {
                             System.out.printf("(%.2f * %.2f)", thetaVector[k2], xVector[k2]);
                             System.out.print(k2 == (xVector.length - 1) ? "" : " + ");
@@ -117,7 +118,7 @@ public class MLAlgorithmsInJava {
                 }
                 System.out.println();
             }
-            System.out.println("\nCalculating the cost [J(\u019F\u2080, \u019F\u2081...\u019F\u2099)) = 1 / (2 * m) * \u221A(\u2211((h(x\u2099) - y\u2099)\u00B2))]...\n");
+            System.out.println("\nCalculating the cost [J(\u019F\u2080, \u019F\u2081...\u019F\u2099)) = 1 / (2 * m) * (\u2211((h(x\u2099) - y\u2099)\u00B2))]...\n");
             Double[] J = new Double[thetaMatrix.length];
             for(int i = 0; i < thetaMatrix.length; i++) {
                 if((J[i] = LinearRegression.CostFunction(h[i], yVector)) == null) {
@@ -126,7 +127,7 @@ public class MLAlgorithmsInJava {
                 else {
                     // My fun code to print out the results of the cost function! 
                     System.out.print("J(");
-                    for(int k2 = 0; k2 < thetaMatrix.length; k2++) {
+                    for(int k2 = 0; k2 < thetaMatrix[0].length; k2++) {
                         System.out.printf("%.2f", thetaMatrix[i][k2]);
                         System.out.print(k2 == (thetaMatrix.length - 1) ? "" : ", ");
                     }
@@ -135,13 +136,15 @@ public class MLAlgorithmsInJava {
                 }
             }
             System.out.println("\nPerforming gradient descent...\n");
-            Double thetaJ = J[0];
             Double alpha = 0.0;
-            Double[] minimizedThetaVector = new Double[thetaMatrix[0].length];
-            for(int i = 0; i < J.length; i++) {
-                System.out.println("J = " + J[i]);
+            for(int i = 0; i < xMatrix.length; i++) {
+                for(int j = 0; j < thetaMatrix.length; j++) {
+                    System.out.println("Theta" + j + " = " + thetaMatrix[i][j]);
+                    System.out.println("x" + j + " = " + xMatrix[i][j]);
+                    /** LEFT OFF HERE! WATCH VIDEOS FIRST! **/
+                }
+                System.out.println();
             }
-            /** LEFT OFF HERE! **/
         }
     }
 }
