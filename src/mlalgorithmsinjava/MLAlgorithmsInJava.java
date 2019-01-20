@@ -36,28 +36,30 @@ public class MLAlgorithmsInJava {
     
     /**
      * x represents the set of independent variables, known as the set of features.
-     * In this case, there is only one, a house's square footage.
-     * x[1][n] must always equal 1 to allow the formula to return theta[0][n]
+     * For example, the square footage of a house.
+     * x[1][n] must always equal 1 to allow the formula to return theta[0][n] (the y-intercept for all lines of x).
+     * There must be a row of x values in the x matrix for each element in the y vector.
      */
-    public static Double[][] xMatrix = {/*{1.0, 90.0},
-                                        {1.0, 101.0},*/
+    public static Double[][] xMatrix = {{1.0, 90.0},
+                                        {1.0, 101.0},
                                         {1.0, 1330.0}
     };
     
     /**
      * y represents the dependent variable, known as the output feature.
-     * In this case, the actual price of the house based on the square footage ($151 per square foot in 2018).
+     * For example, the actual price of a house based on the square footage ($151 per square foot in 2018).
+     * There must be an element in the y vector for each row of x values in the x matrix.
      */
-    public static Double[] yVector = {/*24900.0, 338000.0,*/ 6500000.0};
+    public static Double[] yVector = {24900.0, 338000.0, 6500000.0};
 
     /**
-     * theta represents the slope of each feature (x) in the set.
-     * In this case, the slope of the house's square footage values.
-     * The number of thetas must match the number of x's per dimension.
+     * theta represents the slope of each point in the set of features.
+     * For example, the slope of each home price in relation to it's square footage.
+     * The number of elements in each row of theta must match the number elements in each row of x.
      * theta[0][n] is equal to the y-intercept of the prediction.
      */
     public static Double[][] thetaMatrix = {{1.004579, 5.286822},
-                                            {1004.579, 5286.822},
+                                            {1004.579, 5286.822}
     };
     
     /**
@@ -137,11 +139,15 @@ public class MLAlgorithmsInJava {
             }
             System.out.println("\nPerforming gradient descent...\n");
             Double alpha = 0.0;
-            for(int i = 0; i < xMatrix.length; i++) {
-                for(int j = 0; j < thetaMatrix.length; j++) {
-                    System.out.println("Theta" + j + " = " + thetaMatrix[i][j]);
-                    System.out.println("x" + j + " = " + xMatrix[i][j]);
-                    /** LEFT OFF HERE! WATCH VIDEOS FIRST! **/
+            for(int i = 0; i < thetaMatrix.length; i++) {
+                for(int j = 0; j < xMatrix[0].length; j++) {
+                    for(int k = 0; k < yVector.length; k++) {
+                    
+                        System.out.println("Theta" + j + " = " + thetaMatrix[i][j]);
+                        // System.out.println("x" + j + " = " + xMatrix[j][k]);
+                        System.out.println("h\u019F(x) = " + h[j][k]);
+                        /** LEFT OFF HERE! WATCH VIDEOS FIRST! **/
+                    }
                 }
                 System.out.println();
             }
