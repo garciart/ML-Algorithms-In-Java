@@ -50,7 +50,7 @@ public class MLAlgorithmsInJava {
      * For example, the actual price of a house based on the square footage ($151 per square foot in 2018).
      * There must be an element in the y vector for each row of x values in the x matrix.
      */
-    public static Double[] yVector = {24900.0, 338000.0, 6500000.0};
+    public static Double[] yVector = {24.9, 338.0, 6500.0};
 
     /**
      * theta represents the slope of each point in the set of features.
@@ -67,7 +67,7 @@ public class MLAlgorithmsInJava {
      */
     public static void main(String[] args) {
         System.out.println("Hello, world!");
-        System.out.println("\nChecking data...\n");
+        System.out.println("Checking data...");
         // Check that the number of x values equals the number of y values.
         if(xMatrix.length != yVector.length) {
             System.out.println("Check your data: the number of x elements (" + xMatrix.length + ") does not equal the number of y elements (" + yVector.length + ").");
@@ -80,46 +80,78 @@ public class MLAlgorithmsInJava {
         }
         else {
             System.out.println("Data OK.");
-            System.out.println("\nCalculating the hypotheses (h(x) = \u019F\u2080 + \u019F\u2081X\u2081 + ... + \u019F\u2099X\u2099)...\n");
-            // Create a vector to hold each element in a theta matrix column
-            Double[] thetaVector = new Double[thetaMatrix[0].length];
-            // Create a vector to hold each element in an x matrix column
-            Double[] xVector = new Double[xMatrix[0].length];
-            // Create a matrix to hold all the h values per theta and x vector (used to compute sum of squares for each vector)
-            Double[][] h = new Double[thetaMatrix.length][xMatrix.length];
-            /**
-             * To get h, you need to apply each theta vector to each vector of x.
-             * The number of theta vectors controls the outer loop.
-             * Each theta vector must be applied to each x vector,
-             * so the inner loop is controlled by the number of vectors in x.
-             * Each value in a theta vector must be applied to each value in an x vector,
-             * so the innermost loop is controlled by the number of elements
-             * in each theta vector or x vector
-             * (the number of elements in each must be the same for matrix multiplication).
-            */
-            for(int i = 0; i < thetaMatrix.length; i++) {
-                for(int j = 0; j < xMatrix.length; j++) {
-                    for(int k = 0; k < xMatrix[0].length; k++) {
-                        // Create the vectors for matrix multiplication
-                        xVector[k] = xMatrix[j][k];
-                        thetaVector[k] = thetaMatrix[i][k];
-                    }
+            for(int thetaCount = 0; thetaCount < thetaMatrix.length; thetaCount++) {
+                System.out.println("Working on theta vector " + (thetaCount + 1));
+                System.out.println("Calculating the number of features (m)...");
+                int m = xMatrix[thetaCount].length;
+                System.out.println("The number of features is: " + m);
+                System.out.println("Calculating the hypotheses (h\u019F(x) = \u019F\u2080X\u2080 + \u019F\u2081X\u2081 + ... + \u019F\u2099X\u2099)...");
+                // Create a vector to hold each element in a theta matrix column
+                Double[] thetaVector = new Double[thetaMatrix[thetaCount].length];
+                // Create a vector to hold each element in an x matrix column
+                Double[] xVector = new Double[xMatrix[thetaCount].length];
+                // Create a matrix to hold all the h values per theta and x vector (used to compute sum of squares for each vector)
+                Double[][] h = new Double[thetaMatrix.length][xMatrix.length];
+                Double[][] residual = new Double[thetaMatrix.length][xMatrix.length];
+                Double[][] squaredResidual = new Double[thetaMatrix.length][xMatrix.length];
+                Double[] sumOfSquares = new Double[thetaMatrix.length];
+                Double J = 0.0;
+                /**
+                 * To get h, you need to apply each theta vector to each vector of x.
+                 * The number of theta vectors controls the outer loop.
+                 * Each theta vector must be applied to each x vector,
+                 * so the inner loop is controlled by the number of vectors in x.
+                 * Each value in a theta vector must be applied to each value in an x vector,
+                 * so the innermost loop is controlled by the number of elements
+                 * in each theta vector or x vector
+                 * (the number of elements in each must be the same for matrix multiplication).
+                 **/
+
+                for(int i = 0; i < xMatrix.length; i++) {
+                    // Create the vectors for matrix multiplication
+                    xVector = xMatrix[i];
+                    thetaVector = thetaMatrix[thetaCount];
+
                     // Apply the hypothesis function. If it fails, it wil return null and the application will exit.
-                    if((h[i][j] = LinearRegression.Hypothesis(thetaVector, xVector)) == null) {
+                    if((h[thetaCount][i] = LinearRegression.Hypothesis(thetaVector, xVector)) == null) {
                         exit(0);
                     }
                     else {
                         // My fun code to print out each hypothesis function! 
-                        System.out.printf("h\u019F(x) = %.2f = ", h[i][j]);
-                        for(int k2 = 0; k2 < xVector.length; k2++) {
-                            System.out.printf("(%.2f * %.2f)", thetaVector[k2], xVector[k2]);
-                            System.out.print(k2 == (xVector.length - 1) ? "" : " + ");
+                        System.out.printf("h\u019F(x[%d]) = %f or ", (i + 1), h[thetaCount][i]);
+                        for(int k = 0; k < xVector.length; k++) {
+                            System.out.printf("(%f * %f)", thetaVector[k], xVector[k]);
+                            System.out.print(k == (xVector.length - 1) ? "" : " + ");
                         }
                         System.out.println();
                     }
                 }
+                System.out.println("Calculating the residuals of h\u019F(x) - y...");
+                for(int i = 0; i < xMatrix.length; i++) {
+                    residual[thetaCount][i] = h[thetaCount][i] - yVector[i];
+                    System.out.printf("h\u019F(x)[%d] - y[%d] = %f or %f - %f\n", i + 1, i + 1, residual[thetaCount][i], h[thetaCount][i], yVector[i]);
+                }
+                System.out.println("Calculating the squares of the residuals of h\u019F(x) - y...");
+                for(int i = 0; i < xMatrix.length; i++) {
+                    squaredResidual[thetaCount][i] = Math.pow((h[thetaCount][i] - yVector[i]), 2);
+                    System.out.printf("(h\u019F(x)[%d] - y[%d])\u00B2 = %f or %f\u00B2\n", i + 1, i + 1, squaredResidual[thetaCount][i], residual[thetaCount][i]);
+                }
+                System.out.println("Calculating the sum of squares of the residuals of h\u019F(x) - y...");
+                System.out.print("The sum of squares for theta vector " + (thetaCount + 1) + " = ");
+                // Initialize sumOfSquares to prevent NullPointerException when using the += assignment operator
+                sumOfSquares[thetaCount] = 0.0;
+                for(int i = 0; i < xMatrix.length; i++) {
+                    sumOfSquares[thetaCount] += squaredResidual[thetaCount][i];
+                    // System.out.printf("(%f)", squaredResidual[thetaCount][i]);
+                    // System.out.print(i == (squaredResidual[thetaCount].length - 1) ? "" : " + ");
+                }
+                System.out.println(" = " + sumOfSquares[thetaCount]);
+                System.out.println("Calculating the cost function J(\u019F\u2080, \u019F\u2081...\u019F\u2099)) = (1 / (2 * m)) * (\u2211((h(x\u2099) - y\u2099)\u00B2)) for theta vector " + (thetaCount + 1) + "...");
+                J = (1.0 / (2.0 * m)) * sumOfSquares[thetaCount];
+                System.out.printf("J = %f or (1 / (2 * %d)) * %f\n", J, m, sumOfSquares[thetaCount]);
                 System.out.println();
             }
+            /*
             System.out.println("\nCalculating the cost [J(\u019F\u2080, \u019F\u2081...\u019F\u2099)) = 1 / (2 * m) * (\u2211((h(x\u2099) - y\u2099)\u00B2))]...\n");
             Double[] J = new Double[thetaMatrix.length];
             for(int i = 0; i < thetaMatrix.length; i++) {
@@ -146,11 +178,12 @@ public class MLAlgorithmsInJava {
                         System.out.println("Theta" + j + " = " + thetaMatrix[i][j]);
                         // System.out.println("x" + j + " = " + xMatrix[j][k]);
                         System.out.println("h\u019F(x) = " + h[j][k]);
-                        /** LEFT OFF HERE! WATCH VIDEOS FIRST! **/
+                        // LEFT OFF HERE! WATCH VIDEOS FIRST!
                     }
                 }
                 System.out.println();
             }
+            */
         }
     }
 }

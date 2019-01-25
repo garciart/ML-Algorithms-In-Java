@@ -33,7 +33,7 @@ public class LinearRegression {
     /**
      * Calculate a hypothesis for a linear regression problem.
      * @param theta a vector of weights. theta[0] is the y-intercept (b) and theta[1...n] are the slopes of each x value
-     * @param x a vector of x values from the X matrix
+     * @param x a vector of x values from the X matrix, usually with a corresponding value in the y vector
      * @return the hypothesis, i.e., the estimated y value
      */
     public static Double Hypothesis(Double[] theta, Double[] x) {

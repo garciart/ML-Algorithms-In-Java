@@ -1,3 +1,20 @@
+theta[][] - outer loop
+x[][] - middle loop
+y[] - inner loop
+
+
+1. Calculate the number of rows in x[][] -> store in m
+
+2. Calculate the hypothesis for each row of x[][] by first multiplying each value in the row by each value in the corresponding row of theta[], and then summing up the products. Use 1 for all values of x[n][0] -> store in h[]
+
+3. Calculate the difference between h(x) and y -> store in residual[]
+
+4. Square the difference between h(x) and y -> store in squaredResidual[]
+
+5. Sum the residuals -> store in sumOfSquares
+
+6. For linear regression, (1 / (2 * m)) * sumOfSquares
+
 Linear Regression
 Housing prices
 The median list price per square foot in the United States in 2018 is $151.
