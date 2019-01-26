@@ -40,9 +40,9 @@ public class MLAlgorithmsInJava {
      * x[1][n] must always equal 1 to allow the formula to return theta[0][n] (the y-intercept for all lines of x).
      * There must be a row of x values in the x matrix for each element in the y vector.
      */
-    public static Double[][] xMatrix = {{1.0, 90.0},
-                                        {1.0, 101.0},
-                                        {1.0, 1330.0}
+    public static Double[][] xMatrix = {{1.0, 1.0, 2.0},
+                                        {1.0, 2.0, 3.0},
+                                        {1.0, 3.0, 4.0}
     };
     
     /**
@@ -50,7 +50,7 @@ public class MLAlgorithmsInJava {
      * For example, the actual price of a house based on the square footage ($151 per square foot in 2018).
      * There must be an element in the y vector for each row of x values in the x matrix.
      */
-    public static Double[] yVector = {24.9, 338.0, 6500.0};
+    public static Double[] yVector = {1.0, 2.0, 3.0};
 
     /**
      * theta represents the slope of each point in the set of features.
@@ -58,8 +58,8 @@ public class MLAlgorithmsInJava {
      * The number of elements in each row of theta must match the number elements in each row of x.
      * theta[0][n] is equal to the y-intercept of the prediction.
      */
-    public static Double[][] thetaMatrix = {{1.004579, 5.286822},
-                                            {1004.579, 5286.822}
+    public static Double[][] thetaMatrix = {{0.0, 1.0, 1.0},
+                                            {1.0, 0.0, 1.0}
     };
     
     /**
@@ -93,9 +93,14 @@ public class MLAlgorithmsInJava {
                 // Create a matrix to hold all the h values per theta and x vector (used to compute sum of squares for each vector)
                 Double[][] h = new Double[thetaMatrix.length][xMatrix.length];
                 Double[][] residual = new Double[thetaMatrix.length][xMatrix.length];
-                Double[][] squaredResidual = new Double[thetaMatrix.length][xMatrix.length];
+                Double[][] squaredResidualForCF = new Double[thetaMatrix.length][xMatrix.length];
                 Double[] sumOfSquares = new Double[thetaMatrix.length];
                 Double J = 0.0;
+                // Must use this instead of Math.pow to avoid "lossy conversion from double to int" error 
+                Double[] adjustedResidualForGD = new Double[xMatrix.length * xMatrix.length];
+                System.out.println("xMatrix length = " + xMatrix.length + " and adjustedResidualForGD length = " + adjustedResidualForGD.length);
+                Double alpha = 0.0;
+                Double[] tempThetaVector = new Double[thetaMatrix[thetaCount].length];
                 /**
                  * To get h, you need to apply each theta vector to each vector of x.
                  * The number of theta vectors controls the outer loop.
@@ -133,22 +138,33 @@ public class MLAlgorithmsInJava {
                 }
                 System.out.println("Calculating the squares of the residuals of h\u019F(x) - y...");
                 for(int i = 0; i < xMatrix.length; i++) {
-                    squaredResidual[thetaCount][i] = Math.pow((h[thetaCount][i] - yVector[i]), 2);
-                    System.out.printf("(h\u019F(x)[%d] - y[%d])\u00B2 = %f or %f\u00B2\n", i + 1, i + 1, squaredResidual[thetaCount][i], residual[thetaCount][i]);
+                    squaredResidualForCF[thetaCount][i] = Math.pow((h[thetaCount][i] - yVector[i]), 2);
+                    System.out.printf("(h\u019F(x)[%d] - y[%d])\u00B2 = %f or %f\u00B2\n", i + 1, i + 1, squaredResidualForCF[thetaCount][i], residual[thetaCount][i]);
                 }
                 System.out.println("Calculating the sum of squares of the residuals of h\u019F(x) - y...");
                 System.out.print("The sum of squares for theta vector " + (thetaCount + 1) + " = ");
                 // Initialize sumOfSquares to prevent NullPointerException when using the += assignment operator
                 sumOfSquares[thetaCount] = 0.0;
                 for(int i = 0; i < xMatrix.length; i++) {
-                    sumOfSquares[thetaCount] += squaredResidual[thetaCount][i];
-                    // System.out.printf("(%f)", squaredResidual[thetaCount][i]);
-                    // System.out.print(i == (squaredResidual[thetaCount].length - 1) ? "" : " + ");
+                    sumOfSquares[thetaCount] += squaredResidualForCF[thetaCount][i];
+                    System.out.printf("%f", squaredResidualForCF[thetaCount][i]);
+                    System.out.print(i == (squaredResidualForCF[thetaCount].length - 1) ? " or " : " + ");
                 }
-                System.out.println(" = " + sumOfSquares[thetaCount]);
+                System.out.println(sumOfSquares[thetaCount]);
                 System.out.println("Calculating the cost function J(\u019F\u2080, \u019F\u2081...\u019F\u2099)) = (1 / (2 * m)) * (\u2211((h(x\u2099) - y\u2099)\u00B2)) for theta vector " + (thetaCount + 1) + "...");
                 J = (1.0 / (2.0 * m)) * sumOfSquares[thetaCount];
                 System.out.printf("J = %f or (1 / (2 * %d)) * %f\n", J, m, sumOfSquares[thetaCount]);
+                System.out.println("Performing gradient descent...");
+                System.out.println("Adjusting original residuals for gradient descent (h\u019F(x) - y)) * x...");
+                int count = 0;
+                for(int i = 0; i < xMatrix.length; i++) {
+                    for(int j = 0; j < xMatrix[i].length; j++) {
+                        adjustedResidualForGD[count] = residual[thetaCount][i] * xMatrix[i][j];
+                        System.out.printf("h\u019F(x) - y (%f) * x[i][j] (%f) = %f | %f\n", residual[thetaCount][i], xMatrix[i][j], residual[thetaCount][i] * xMatrix[i][j], adjustedResidualForGD[count]);
+                    }
+                    count++;
+                }
+                
                 System.out.println();
             }
             /*
