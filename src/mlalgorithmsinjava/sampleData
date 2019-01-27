@@ -25,3 +25,72 @@
     public static Double[][] thetaMatrix = {{1.004579, 5.286822},
                                             {1004.579, 5286.822}
     };
+
+
+
+
+
+Hello, world!
+Checking data...
+Data OK.
+Working on theta vector 1
+Calculating the number of examples (m)...
+The number of examples is 3
+Calculating the hypotheses: (hƟ(x) = Ɵ₀X₀ + Ɵ₁X₁ + ... + ƟₙXₙ)...
+hƟ(x[1]) = 3.000000 or (0.000000 * 1.000000) + (1.000000 * 1.000000) + (1.000000 * 2.000000)
+hƟ(x[2]) = 5.000000 or (0.000000 * 1.000000) + (1.000000 * 2.000000) + (1.000000 * 3.000000)
+hƟ(x[3]) = 7.000000 or (0.000000 * 1.000000) + (1.000000 * 3.000000) + (1.000000 * 4.000000)
+Calculating the residuals of hƟ(x) - y...
+hƟ(x)[1] - y[1] = 2.000000 or 3.000000 - 1.000000
+hƟ(x)[2] - y[2] = 3.000000 or 5.000000 - 2.000000
+hƟ(x)[3] - y[3] = 4.000000 or 7.000000 - 3.000000
+Calculating the squares of the residuals of hƟ(x) - y...
+(hƟ(x)[1] - y[1])² = 4.000000 or 2.000000²
+(hƟ(x)[2] - y[2])² = 9.000000 or 3.000000²
+(hƟ(x)[3] - y[3])² = 16.000000 or 4.000000²
+Calculating the sum of squares of the residuals of hƟ(x) - y...
+The sum of squares for theta vector 1 = 4.000000 + 9.000000 + 16.000000 or 29.0
+Calculating the cost function J(Ɵ₀, Ɵ₁...Ɵₙ)) = (1 / (2 * m)) * (∑((h(xₙ) - yₙ)²)) for theta vector 1...
+J = 4.833333 or (1 / (2 * 3)) * 29.000000
+Performing gradient descent...
+Adjusting original residuals for gradient descent: (hƟ(x) - y)) * x...
+hƟ(x)[0] - y[0] (2.000000) * x[0][0] (1.000000) = 2.000000
+hƟ(x)[0] - y[0] (2.000000) * x[0][1] (1.000000) = 2.000000
+hƟ(x)[0] - y[0] (2.000000) * x[0][2] (2.000000) = 4.000000
+hƟ(x)[1] - y[1] (3.000000) * x[1][0] (1.000000) = 3.000000
+hƟ(x)[1] - y[1] (3.000000) * x[1][1] (2.000000) = 6.000000
+hƟ(x)[1] - y[1] (3.000000) * x[1][2] (3.000000) = 9.000000
+hƟ(x)[2] - y[2] (4.000000) * x[2][0] (1.000000) = 4.000000
+hƟ(x)[2] - y[2] (4.000000) * x[2][1] (3.000000) = 12.000000
+hƟ(x)[2] - y[2] (4.000000) * x[2][2] (4.000000) = 16.000000
+
+Working on theta vector 2
+Calculating the number of examples (m)...
+The number of examples is 3
+Calculating the hypotheses: (hƟ(x) = Ɵ₀X₀ + Ɵ₁X₁ + ... + ƟₙXₙ)...
+hƟ(x[1]) = 3.000000 or (1.000000 * 1.000000) + (0.000000 * 1.000000) + (1.000000 * 2.000000)
+hƟ(x[2]) = 4.000000 or (1.000000 * 1.000000) + (0.000000 * 2.000000) + (1.000000 * 3.000000)
+hƟ(x[3]) = 5.000000 or (1.000000 * 1.000000) + (0.000000 * 3.000000) + (1.000000 * 4.000000)
+Calculating the residuals of hƟ(x) - y...
+hƟ(x)[1] - y[1] = 2.000000 or 3.000000 - 1.000000
+hƟ(x)[2] - y[2] = 2.000000 or 4.000000 - 2.000000
+hƟ(x)[3] - y[3] = 2.000000 or 5.000000 - 3.000000
+Calculating the squares of the residuals of hƟ(x) - y...
+(hƟ(x)[1] - y[1])² = 4.000000 or 2.000000²
+(hƟ(x)[2] - y[2])² = 4.000000 or 2.000000²
+(hƟ(x)[3] - y[3])² = 4.000000 or 2.000000²
+Calculating the sum of squares of the residuals of hƟ(x) - y...
+The sum of squares for theta vector 2 = 4.000000 + 4.000000 + 4.000000 or 12.0
+Calculating the cost function J(Ɵ₀, Ɵ₁...Ɵₙ)) = (1 / (2 * m)) * (∑((h(xₙ) - yₙ)²)) for theta vector 2...
+J = 2.000000 or (1 / (2 * 3)) * 12.000000
+Performing gradient descent...
+Adjusting original residuals for gradient descent: (hƟ(x) - y)) * x...
+hƟ(x)[0] - y[0] (2.000000) * x[0][0] (1.000000) = 2.000000
+hƟ(x)[0] - y[0] (2.000000) * x[0][1] (1.000000) = 2.000000
+hƟ(x)[0] - y[0] (2.000000) * x[0][2] (2.000000) = 4.000000
+hƟ(x)[1] - y[1] (2.000000) * x[1][0] (1.000000) = 2.000000
+hƟ(x)[1] - y[1] (2.000000) * x[1][1] (2.000000) = 4.000000
+hƟ(x)[1] - y[1] (2.000000) * x[1][2] (3.000000) = 6.000000
+hƟ(x)[2] - y[2] (2.000000) * x[2][0] (1.000000) = 2.000000
+hƟ(x)[2] - y[2] (2.000000) * x[2][1] (3.000000) = 6.000000
+hƟ(x)[2] - y[2] (2.000000) * x[2][2] (4.000000) = 8.000000
